@@ -52,7 +52,7 @@
 							</thead>
 							<tbody>
 								<?php
-									$att=$conn->query("SELECT a.*,e.employee_no, concat(e.lastname,', ',e.firstname,' ',e.middlename) as ename FROM attendance a inner join employee e on a.employee_id = e.id order by UNIX_TIMESTAMP(datetime_log) asc  ") or die(mysqli_error());
+									$att=$conn->query("SELECT a.*,e.employee_no, concat(e.lastname,', ',e.firstname,' ',e.middlename) as ename FROM attendance a inner join employee e on a.employee_id = e.id order by UNIX_TIMESTAMP(datetime_log) asc  ") or die(mysqli_error($conn));
 									$lt_arr = array(1 => " Time-in AM",2=>"Time-out AM",3 => " Time-in PM",4=>"Time-out PM");
 									while ($row=$att->fetch_array()){
 										$date = date("Y-m-d",strtotime($row['datetime_log']));
@@ -172,7 +172,7 @@
 		}
 		function rem_att(id){
 				
-			start_load()
+			start_load();
 			$.ajax({
 				url:'ajax.php?action=delete_employee_attendance_single',
 				method:"POST",
@@ -182,7 +182,7 @@
 						if(resp == 1){
 							alert_toast("Selected employee's time log data successfully deleted","success");
 								setTimeout(function(){
-								location.reload();
+								location.reload()
 
 							},1000)
 						}

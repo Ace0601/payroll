@@ -23,7 +23,7 @@
 							<tbody>
 								<?php
 									
-									$payroll=$conn->query("SELECT * FROM payroll order by date(date_from) desc") or die(mysqli_error());
+									$payroll=$conn->query("SELECT * FROM payroll order by date(date_from) desc") or die(mysqli_error($conn));
 									while($row=$payroll->fetch_array()){
 								?>
 								<tr>

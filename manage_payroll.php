@@ -3,26 +3,26 @@
 <div class="container-fluid">
 	<div class="col-lg-12">
 		<form id="manage-payroll">
-				<input type="hidden" name="id" value="">
-				<div class="form-group">
-					<label for="" class="control-label">Employee :</label>
-					<select name="employee" class="custom-select browser-default" id="">
-						<?php
-							$employee_qry=$conn->query("SELECT * FROM employee") or die(mysqli_error());
-							while ($row=$employee_qry->fetch_array()): ?>
-								<option> <?php echo $row['lastname'] . ", " . $row['firstname']; ?> </option>
-							<?php endwhile;
-						?> 
-				<input type="hidden" name="id" value="">
-				<div class="form-group mt-2">
-					<label for="" class="control-label">Date From :</label>
-					<input type="date" class="form-control" name="date_from">
-				</div>
-				<div class="form-group">
-					<label for="" class="control-label">Date To :</label>
-					<input type="date" class="form-control" name="date_to">
-				</div>
-				<!-- REMOVE
+			<input type="hidden" name="id" value="">
+			<div class="form-group">
+				<label for="" class="control-label">Employee :</label>
+				<select name="employee" class="custom-select browser-default" id="">
+					<?php
+					$employee_qry = $conn->query("SELECT * FROM employee") or die(mysqli_error($conn));
+					while ($row = $employee_qry->fetch_array()) : ?>
+						<option> <?php echo $row['lastname'] . ", " . $row['firstname']; ?> </option>
+					<?php endwhile;
+					?>
+					<input type="hidden" name="id" value="">
+					<div class="form-group mt-2">
+						<label for="" class="control-label">Date From :</label>
+						<input type="date" class="form-control" name="date_from">
+					</div>
+					<div class="form-group">
+						<label for="" class="control-label">Date To :</label>
+						<input type="date" class="form-control" name="date_to">
+					</div>
+					<!-- REMOVE
 				<div class="form-group">
 					<label for="" class="control-label">Payroll Type :</label>
 					<select name="type" class="custom-select browser-default" id="">
@@ -36,22 +36,22 @@
 </div>
 
 <script>
-	$('#manage-payroll').submit(function(e){
-		e.preventDefault()
-		start_load()
+	$('#manage-payroll').submit(function(e) {
+		e.preventDefault();
+		start_load();
 		$.ajax({
-		url:'ajax.php?action=save_payroll',
-		method:"POST",
-		data:$(this).serialize(),
-		error:err=>console.log(),
-		success:function(resp){
-				if(resp == 1){
-					alert_toast("Payroll successfully saved","success");
-					setTimeout(function(){
-								location.reload()
-							},1000)
+			url: 'ajax.php?action=save_payroll',
+			method: "POST",
+			data: $(this).serialize(),
+			error: err => console.log(),
+			success: function(resp) {
+				if (resp == 1) {
+					alert_toast("Payroll successfully saved", "success");
+					setTimeout(function() {
+						location.reload();
+					}, 1000)
 				}
-		}
-	})
+			}
+		})
 	})
 </script>

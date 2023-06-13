@@ -22,7 +22,7 @@ header("location:index.php?page=home");
 	body{
 		width: 100%;
 	    height: calc(100%);
-	    /*background: #007bff;*/
+	    /*background: #c9e657;*/
 	}
 	main#main{
 		width:100%;
@@ -35,7 +35,7 @@ header("location:index.php?page=home");
 		margin: auto;
 		width:40%;
 		height: calc(100%);
-		background-color: #c9e657;
+		/*background-color: #c9e657;*/
 		display: flex;
 		align-items: center;
 	}
@@ -71,7 +71,7 @@ div#login-right::before {
     left: 0;
     width: calc(100%);
     height: calc(100%);
-    background: #B1F83C;
+    background: #c9e657; 
 }
 
 </style>

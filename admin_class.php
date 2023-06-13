@@ -71,6 +71,14 @@ Class Action {
 			return 1;
 		}
 	}
+
+	function delete_user(){
+		extract($_POST);
+		$delete = $this->db->query("DELETE FROM user where id = ".$id);
+		if($delete)
+			return 1;
+	}
+
 	function signup(){
 		extract($_POST);
 		$data = " name = '$name' ";
@@ -363,7 +371,7 @@ Class Action {
 		$dm = 11;
 		$calc_days = abs(strtotime($pay['date_to']." 23:59:59")) - strtotime($pay['date_from']." 00:00:00 -1 day") ; 
         $calc_days =floor($calc_days / (60*60*24)  );
-		$att=$this->db->query("SELECT * FROM attendance where date(datetime_log) between '".$pay['date_from']."' and '".$pay['date_from']."' order by UNIX_TIMESTAMP(datetime_log) asc  ") or die(mysqli_error());
+		$att=$this->db->query("SELECT * FROM attendance where date(datetime_log) between '".$pay['date_from']."' and '".$pay['date_from']."' order by UNIX_TIMESTAMP(datetime_log) asc  ") or die(mysqli_error($conn));
 		while($row=$att->fetch_array()){
 			$date = date("Y-m-d",strtotime($row['datetime_log']));
 			if($row['log_type'] == 1 || $row['log_type'] == 3){
