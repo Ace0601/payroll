@@ -32,9 +32,10 @@ header("location:index.php?page=home");
 	#login-right{
 		position: absolute;
 		right:0;
+		margin: auto;
 		width:40%;
 		height: calc(100%);
-		background:#B1F83C;
+		background-color: #c9e657;
 		display: flex;
 		align-items: center;
 	}
@@ -43,7 +44,7 @@ header("location:index.php?page=home");
 		left:0;
 		width:90%;
 		height: calc(100%);
-		background: #B1F83C;
+		/*background: #c9e657;*/
 		display: flex;
 		align-items: center;
 		background: url(assets/img/202.png);
@@ -83,7 +84,7 @@ div#login-right::before {
   		</div>
 
   		<div id="login-right">
-  			<div class="card col-md-8">
+  			<div class="card col-md-7">
   				<div class="card-body">
   						
   					<form id="login-form" >
