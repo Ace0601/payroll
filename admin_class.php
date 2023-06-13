@@ -366,24 +366,24 @@ Class Action {
 		// $am_out = "12:00";
 		// $pm_in = "13:00";
 		// $pm_out = "17:00";
-		$this->db->query("DELETE FROM payroll_items where payroll_id=".$id);
+		//$this->db->query("DELETE FROM payroll_items where payroll_id=".$id);
 		$pay = $this->db->query("SELECT * FROM payroll where id = ".$id)->fetch_array();
 		$employee = $this->db->query("SELECT * FROM employee");
 		//$dm = 5;
 		$calc_days = abs(strtotime($pay['date_to']." 23:59:59")) - strtotime($pay['date_from']." 00:00:00 -1 day") ; 
         $calc_days =floor($calc_days / (60*60*24)  );
-		$att=$this->db->query("SELECT * FROM attendance where date(datetime_log) between '".$pay['date_from']."' and '".$pay['date_from']."' order by UNIX_TIMESTAMP(datetime_log) asc  ") or die(mysqli_error($conn));
+		$att=$this->db->query("SELECT * FROM attendance where datetime_log between '".$pay['date_from']."' and '".$pay['date_from']."' order by datetime_log asc") or die(mysqli_error($conn));
 		while($row=$att->fetch_array()){
 			$date = date("Y-m-d",strtotime($row['datetime_log']));
-			if($row['log_type'] == 1 || $row['log_type'] == 3){
+			if($row['log_type'] == 1){
 				if(!isset($attendance[$row['employee_id']."_".$date]['log'][$row['log_type']]))
 				$attendance[$row['employee_id']."_".$date]['log'][$row['log_type']] = $row['datetime_log'];
 			}else{
 				$attendance[$row['employee_id']."_".$date]['log'][$row['log_type']] = $row['datetime_log'];
 			}
 			}
-		$deductions = $this->db->query("SELECT * FROM employee_deductions where (date(effective_date) between '".$pay['date_from']."' and '".$pay['date_from']."' ) ) ");
-		$allowances = $this->db->query("SELECT * FROM employee_allowances where (date(effective_date) between '".$pay['date_from']."' and '".$pay['date_from']."' ) ) ");
+		$deductions = $this->db->query("SELECT * FROM employee_deductions where effective_date between '".$pay['date_from']."' and '".$pay['date_from']."' ) ) ");
+		$allowances = $this->db->query("SELECT * FROM employee_allowances where effective_date between '".$pay['date_from']."' and '".$pay['date_from']."' ) ) ");
 		while($row = $deductions->fetch_assoc()){
 			$ded[$row['employee_id']][] = array('did'=>$row['deduction_id'],"amount"=>$row['amount']);
 		}
@@ -392,7 +392,7 @@ Class Action {
 		}
 		while($row =$employee->fetch_assoc()){
 			$salary = $row['salary'];
-			$daily = $salary / 22;
+			//$daily = $salary / 22;
 			$min = (($salary / 22) / 8) /60;
 			$absent = 0;
 			$late = 0;
@@ -405,26 +405,25 @@ Class Action {
 
 			for($i = 0; $i < $calc_days;$i++){
 				$dd = date("Y-m-d",strtotime($pay['date_from']." +".$i." days"));
-				$count = 0;
-				$p = 0;
+				// $count = 0;
+				// $p = 0;
 				if(isset($attendance[$row['id']."_".$dd]['log']))
 				$count = count($attendance[$row['id']."_".$dd]['log']);
 					
 					if(isset($attendance[$row['id']."_".$dd]['log'][1]) && isset($attendance[$row['id']."_".$dd]['log'][2])){
-						$att_mn = abs(strtotime($attendance[$row['id']."_".$dd]['log'][2])) - strtotime($attendance[$row['id']."_".$dd]['log'][1]) ; 
-        				$att_mn =floor($att_mn  /60 );
-        				$net += ($att_mn * $min);
-        				$late += (240 - $att_mn);
-        				$present += .5;
-        				
-					}
-					if(isset($attendance[$row['id']."_".$dd]['log'][3]) && isset($attendance[$row['id']."_".$dd]['log'][4])){
-						$att_mn = abs(strtotime($attendance[$row['id']."_".$dd]['log'][4])) - strtotime($attendance[$row['id']."_".$dd]['log'][3]) ; 
+						$att_mn = abs(strtotime($attendance[$row['id']."_".$dd]['log'][2])) - strtotime($attendance[$row['id']."_".$dd]['log'][1]); 
         				$att_mn =floor($att_mn  /60 );
         				$net += ($att_mn * $min);
         				$late += (240 - $att_mn);
         				$present += .5;
 					}
+					// if(isset($attendance[$row['id']."_".$dd]['log'][3]) && isset($attendance[$row['id']."_".$dd]['log'][4])){
+					// 	$att_mn = abs(strtotime($attendance[$row['id']."_".$dd]['log'][4])) - strtotime($attendance[$row['id']."_".$dd]['log'][3]) ; 
+        			// 	$att_mn =floor($att_mn  /60 );
+        			// 	$net += ($att_mn * $min);
+        			// 	$late += (240 - $att_mn);
+        			// 	$present += .5;
+					// }
 			}
 			$ded_arr = array();
 			$all_arr = array();
