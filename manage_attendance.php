@@ -19,10 +19,10 @@
 			<div class="col-md-4">
 				<label for="" class="control-label">Type</label>
 				<select id="type" class="borwser-default custom-select">
-					<option value="1">Time-in AM</option>
-					<option value="2">Time-out AM</option>
-					<option value="3">Time-in PM</option>
-					<option value="4">Tim-out PM</option>
+					<option value="1">Time-in</option>
+					<option value="2">Time-out</option>
+					<!-- <option value="3">Time-in PM</option>
+					<option value="4">Tim-out PM</option> -->
 				</select>
 			</div>
 			<!-- automate
@@ -74,7 +74,7 @@
 			</td>
 			
 			<td>
-				<p class="adate">
+				<p class="adate" name="datetime_log[]">
 					<?php 
 						date_default_timezone_set("Asia/Manila");
 						echo date("m-d-Y") . " " . date("h:i:sa");
@@ -92,9 +92,9 @@
 		placeholder:"Select here",
 		width:"100%"
 	})
-	$('.datetimepicker').datetimepicker({
-		format:"y-m-d H:i "
-	})
+	// $('.datetimepicker').datetimepicker({
+	// 	format:"y-m-d H:i "
+	// })
 	
 	$('#add_list').click(function(){
 		var employee_id = $('#employee_id').val(),
@@ -104,7 +104,7 @@
 		var tr = $('#tr_clone tr').clone()
 		tr.find('[name="employee_id[]"]').val(employee_id)
 		tr.find('[name="log_type[]"]').val(type)
-		//tr.find('[name="datetime_log[]"]').val(adate)
+		tr.find('[name="datetime_log[]"]').val(adate)
 		tr.find('.attendance').html($('#employee_id option[value="'+employee_id+'"]').html())
 		tr.find('.type').html($('#type option[value="'+type+'"]').html())
 		tr.find('.adate').html(adate)
@@ -120,7 +120,7 @@
 	$(document).ready(function(){
 		$('#employee-attendance').submit(function(e){
 				e.preventDefault()
-				start_load();
+				start_load()
 			$.ajax({
 				url:'ajax.php?action=save_employee_attendance',
 				method:"POST",

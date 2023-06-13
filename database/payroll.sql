@@ -191,6 +191,7 @@ INSERT INTO `employee_deductions` (`id`, `employee_id`, `deduction_id`, `amount`
 CREATE TABLE `payroll` (
   `id` int(30) NOT NULL,
   `ref_no` text NOT NULL,
+  `employee_id` int(30) NOT NULL,
   `date_from` date NOT NULL,
   `date_to` date NOT NULL,
   -- `type` tinyint(1) NOT NULL COMMENT '1 = Monthly, 2= Semi-Montly, 3 = once',
@@ -202,8 +203,8 @@ CREATE TABLE `payroll` (
 -- Dumping data for table `payroll`
 --
 
-INSERT INTO `payroll` (`id`, `ref_no`, `date_from`, `date_to`, `status`, `date_created`) VALUES
-(1, '2020-3543', '2020-09-16', '2020-09-30', 1, '2020-09-29 15:04:13');
+INSERT INTO `payroll` (`id`, `ref_no`, `employee_id`, `date_from`, `date_to`, `status`, `date_created`) VALUES
+(1, '2020-3543', 9, '2020-09-16', '2020-09-30', 1, '2020-09-29 15:04:13');
 
 -- --------------------------------------------------------
 

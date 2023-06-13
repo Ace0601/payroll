@@ -14,6 +14,7 @@
 							<thead>
 								<tr>
 									<th>Ref No</th>
+									<th>Employee</th>
 									<th>Date From</th>
 									<th>Date To</th>
 									<th>Status</th>
@@ -22,12 +23,13 @@
 							</thead>
 							<tbody>
 								<?php
-									
+									//$employee_qry = $conn->query("SELECT * FROM employee ") or die(mysqli_error($conn));
 									$payroll=$conn->query("SELECT * FROM payroll order by date(date_from) desc") or die(mysqli_error($conn));
 									while($row=$payroll->fetch_array()){
 								?>
 								<tr>
 									<td><?php echo $row['ref_no']?></td>
+									<td><?php echo $row['employee_id'] ?></td>
 									<td><?php echo date("M d, Y",strtotime($row['date_from'])) ?></td>
 									<td><?php echo date("M d, Y",strtotime($row['date_to'])) ?></td>
 									<?php if($row['status'] == 0): ?>

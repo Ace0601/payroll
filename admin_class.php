@@ -278,7 +278,7 @@ Class Action {
 		foreach($deduction_id as $k =>$v){
 			$data =" employee_id='$employee_id' ";
 			$data .=", deduction_id = '$deduction_id[$k]' ";
-			$data .=", type = '$type[$k]' ";
+			//$data .=", type = '$type[$k]' ";
 			$data .=", amount = '$amount[$k]' ";
 			$data .=", effective_date = '$effective_date[$k]' ";
 			$save[] = $this->db->query("INSERT INTO employee_deductions set ".$data);
@@ -297,7 +297,7 @@ Class Action {
 		extract($_POST);
 		
 		foreach($employee_id as $k =>$v){
-			$datetime_log[$k] =date("Y-m-d H:i",strtotime($datetime_log[$k]));
+			//$datetime_log[$k] =date("Y-m-d H:i",strtotime($datetime_log[$k]));
 			$data =" employee_id='$employee_id[$k]' ";
 			$data .=", log_type = '$log_type[$k]' ";
 			$data .=", datetime_log = '$datetime_log[$k]' ";
@@ -324,13 +324,13 @@ Class Action {
 		if($delete)
 			return 1;
 	}
-
-	//remove
+	//fix this (not functioning)
 	function save_payroll(){
 		extract($_POST);
-		$data =" date_from='$date_from' ";
+		$data = " employee = '$employee'" ;
+		$data .=", date_from ='$date_from' ";
 		$data .=", date_to = '$date_to' ";
-		$data .=", type = '$type' ";
+		//$data .=", type = '$type' ";
 		
 
 		if(empty($id)){
@@ -358,17 +358,14 @@ Class Action {
 	}
 	function calculate_payroll(){
 		extract($_POST);
-		$am_in = "08:00";
-		$am_out = "12:00";
-		$pm_in = "13:00";
-		$pm_out = "17:00";
+		// $am_in = "08:00";
+		// $am_out = "12:00";
+		// $pm_in = "13:00";
+		// $pm_out = "17:00";
 		$this->db->query("DELETE FROM payroll_items where payroll_id=".$id);
 		$pay = $this->db->query("SELECT * FROM payroll where id = ".$id)->fetch_array();
 		$employee = $this->db->query("SELECT * FROM employee");
-		if($pay['type'] == 1)
-		$dm = 22;
-		else
-		$dm = 11;
+		//$dm = 5;
 		$calc_days = abs(strtotime($pay['date_to']." 23:59:59")) - strtotime($pay['date_from']." 00:00:00 -1 day") ; 
         $calc_days =floor($calc_days / (60*60*24)  );
 		$att=$this->db->query("SELECT * FROM attendance where date(datetime_log) between '".$pay['date_from']."' and '".$pay['date_from']."' order by UNIX_TIMESTAMP(datetime_log) asc  ") or die(mysqli_error($conn));
@@ -381,8 +378,8 @@ Class Action {
 				$attendance[$row['employee_id']."_".$date]['log'][$row['log_type']] = $row['datetime_log'];
 			}
 			}
-		$deductions = $this->db->query("SELECT * FROM employee_deductions where (`type` = '".$pay['type']."' or (date(effective_date) between '".$pay['date_from']."' and '".$pay['date_from']."' ) ) ");
-		$allowances = $this->db->query("SELECT * FROM employee_allowances where (`type` = '".$pay['type']."' or (date(effective_date) between '".$pay['date_from']."' and '".$pay['date_from']."' ) ) ");
+		$deductions = $this->db->query("SELECT * FROM employee_deductions where (date(effective_date) between '".$pay['date_from']."' and '".$pay['date_from']."' ) ) ");
+		$allowances = $this->db->query("SELECT * FROM employee_allowances where (date(effective_date) between '".$pay['date_from']."' and '".$pay['date_from']."' ) ) ");
 		while($row = $deductions->fetch_assoc()){
 			$ded[$row['employee_id']][] = array('did'=>$row['deduction_id'],"amount"=>$row['amount']);
 		}
@@ -395,7 +392,7 @@ Class Action {
 			$min = (($salary / 22) / 8) /60;
 			$absent = 0;
 			$late = 0;
-			$dp = 22 / $pay['type'];
+			$dp = 22 / $pay;
 			$present=0;
 			$net=0;
 			$allow_amount=0;

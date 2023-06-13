@@ -36,6 +36,7 @@
 </div>
 
 <script>
+	//logical error: can't add payroll
 	$('#manage-payroll').submit(function(e) {
 		e.preventDefault();
 		start_load();
