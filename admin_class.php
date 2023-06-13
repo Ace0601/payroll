@@ -371,10 +371,10 @@ Class Action {
 		$employee = $this->db->query("SELECT * FROM employee");
 		//$dm = 5;
 		$calc_days = abs(strtotime($pay['date_to']." 23:59:59")) - strtotime($pay['date_from']." 00:00:00 -1 day") ; 
-        $calc_days =floor($calc_days / (60*60*24)  );
+        $calc_days =floor($calc_days / (60*60*24));
 		$att=$this->db->query("SELECT * FROM attendance where datetime_log between '".$pay['date_from']."' and '".$pay['date_from']."' order by datetime_log asc") or die(mysqli_error($conn));
 		while($row=$att->fetch_array()){
-			$date = date("Y-m-d",strtotime($row['datetime_log']));
+			$date = date("M d,Y",strtotime($row['datetime_log']));
 			if($row['log_type'] == 1){
 				if(!isset($attendance[$row['employee_id']."_".$date]['log'][$row['log_type']]))
 				$attendance[$row['employee_id']."_".$date]['log'][$row['log_type']] = $row['datetime_log'];
