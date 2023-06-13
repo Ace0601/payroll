@@ -96,6 +96,7 @@
 	// 	format:"y-m-d H:i "
 	// })
 	
+	// fix datetime 
 	$('#add_list').click(function(){
 		var employee_id = $('#employee_id').val(),
 			type = $('#type').val(),
@@ -117,6 +118,7 @@
 		$('#adate').val('')
 
 	})
+	// fix reload
 	$(document).ready(function(){
 		$('#employee-attendance').submit(function(e){
 				e.preventDefault()

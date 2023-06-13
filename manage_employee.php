@@ -77,6 +77,7 @@ if (isset($_GET['id'])) {
 			placeholder: "Please Select Here",
 			width: "100%"
 		})
+		//fix reload
 		$('#employee_frm').submit(function (e) {
 			e.preventDefault()
 			start_load();

@@ -80,7 +80,7 @@
 			$('.edit_employee').click(function(){
 				var $id=$(this).attr('data-id');
 				uni_modal("Edit Employee","manage_employee.php?id="+$id)
-				
+				//edit employee not funct
 			});
 			$('.view_employee').click(function(){
 				var $id=$(this).attr('data-id');
