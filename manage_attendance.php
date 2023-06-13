@@ -4,8 +4,8 @@
 	<div class="col-lg-12">
 	<form action="" id="employee-attendance">
 		<div class="row form-group">
-			<div class="col-md-4">
-				<label for="" class="control-label">Employee</label>
+			<div class="col-md-12">
+				<label for="" class="control-label">Employee  </label>
 				<select id="employee_id" class="borwser-default select2">
 					<option value=""></option>
 					<?php 
@@ -16,8 +16,8 @@
 					<?php endwhile; ?>
 				</select>
 			</div>
-			<div class="col-md-4">
-				<label for="" class="control-label">Type</label>
+			<div class="col-md-3 mt-3">
+				<label for="" class="control-label">Type </label>
 				<select id="type" class="borwser-default custom-select">
 					<option value="1">Time-in</option>
 					<option value="2">Time-out</option>
@@ -25,12 +25,15 @@
 					<option value="4">Tim-out PM</option> -->
 				</select>
 			</div>
-			<!-- automate
-			<div class="col-md-3">
-				<label for="" class="control-label">Date</label>
-				<input type="text" id="adate" class="form-control datetimepicker" autocomplete="off">
-			</div> -->
-			<div class="col-md-4">
+			<div class="col-md-5 mt-3">
+				<label for="" class="control-label">Date </label>
+				<input type="text" id="adate" class="form-control" 
+					value=" <?php 
+						date_default_timezone_set("Asia/Manila");
+						echo date("m/d/Y - h:i:s a");
+					?>" readonly>
+			</div> 
+			<div class="col-md-4 mt-3">
 				<label for="" class="control-label">&nbsp</label>
 				<button class="btn btn-primary btn-block btn-sm px-2" type="button" id="add_list"> Add to List</button>
 			</div>	
@@ -77,7 +80,7 @@
 				<p class="adate" name="datetime_log[]">
 					<?php 
 						date_default_timezone_set("Asia/Manila");
-						echo date("m-d-Y") . " " . date("h:i:sa");
+						echo date("m/d/Y - h:i:s a");
 					?> </p>
 			</td>
 			<td class="text-center">
@@ -96,7 +99,6 @@
 	// 	format:"y-m-d H:i "
 	// })
 	
-	// fix datetime 
 	$('#add_list').click(function(){
 		var employee_id = $('#employee_id').val(),
 			type = $('#type').val(),
@@ -114,11 +116,12 @@
 			placeholder:"Select here",
 			width:"100%"
 		})
-		$('#type').val('')
-		$('#adate').val('')
+		//$('#type').val('')
+		//$('#adate').val('')
 
 	})
-	// fix reload
+
+	// db saving
 	$(document).ready(function(){
 		$('#employee-attendance').submit(function(e){
 				e.preventDefault()

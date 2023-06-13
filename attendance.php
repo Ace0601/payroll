@@ -52,12 +52,12 @@
 							</thead>
 							<tbody>
 								<?php
-									$att=$conn->query("SELECT a.*,e.employee_no, concat(e.lastname,', ',e.firstname,' ',e.middlename) as ename FROM attendance a inner join employee e on a.employee_id = e.id order by UNIX_TIMESTAMP(datetime_log) asc  ") or die(mysqli_error($conn));
-									$lt_arr = array(1 => " Time-in AM",2=>"Time-out AM",3 => " Time-in PM",4=>"Time-out PM");
+									$att=$conn->query("SELECT a.*,e.employee_no, concat(e.lastname,', ',e.firstname,' ',e.middlename) as ename FROM attendance a inner join employee e on a.employee_id = e.id order by datetime_log asc") or die(mysqli_error($conn));
+									$lt_arr = array(1 => " Time-in",2=>"Time-out"); 
 									while ($row=$att->fetch_array()){
-										$date = date("Y-m-d",strtotime($row['datetime_log']));
+										$date = date("M d, Y", strtotime($row['datetime_log']));
 										$attendance[$row['employee_id']."_".$date]['details'] = array("eid"=>$row['employee_id'],"name"=>$row['ename'],"eno"=>$row['employee_no'],"date"=>$date);
-										if($row['log_type'] == 1 || $row['log_type'] == 3){
+										if($row['log_type'] == 1){
 											if(!isset($attendance[$row['employee_id']."_".$date]['log'][$row['log_type']]))
 											$attendance[$row['employee_id']."_".$date]['log'][$row['log_type']] = array('id'=>$row['id'],"date" =>  $row['datetime_log']);
 										}else{
@@ -67,7 +67,9 @@
 										foreach ($attendance as $key => $value) {
 								?>
 								<tr>
-									<td><?php echo date("M d,Y",strtotime($attendance[$key]['details']['date'])) ?></td>
+									<td class="col-sm-2"><?php 
+										echo date("M d,Y", strtotime($attendance[$key]['details']['date'])); // removed date("M/d/Y"), strtotime($attendance[$key]['details']['date'])  
+										?></td>
 									<td><?php echo $attendance[$key]['details']['eno'] ?></td>
 									<td><?php echo $attendance[$key]['details']['name'] ?></td>
 									<td>
@@ -77,12 +79,15 @@
 									$att_ids = array();
 									foreach($attendance[$key]['log'] as $k => $v) :
 									 ?>
-									 <div class="col-sm-6" style="">
+									 <div class="col-sm-6">
 										<p>
 											<small><b><?php echo $lt_arr[$k].": <br/>" ?>
 												
-
-											<?php echo (date("h:i A",strtotime($attendance[$key]['log'][$k]['date'])))  ?> </b>
+											<!-- edited -->
+											<?php 
+												//date_default_timezone_set("Asia/Manila");
+												echo date("h:m a", strtotime($attendance[$key]['log'][$k]['date']));
+											?> </b>
 											<span class="badge badge-danger rem_att" data-id="<?php echo $attendance[$key]['log'][$k]['id'] ?>"><i class="fa fa-trash"></i></span>
 										</small>
 										</p>
@@ -124,20 +129,15 @@
 	</script>
 	<script type="text/javascript">
 		$(document).ready(function(){
-
-			
-
-			
 			$('.edit_attendance').click(function(){
 				var $id=$(this).attr('data-id');
-				uni_modal("Edit Employee","manage_attendance.php?id="+$id)
-				
+				uni_modal("Edit Attendance","manage_attendance.php?id="+$id)
 			});
-			$('.view_attendance').click(function(){
-				var $id=$(this).attr('data-id');
-				uni_modal("Employee Details","view_attendance.php?id="+$id,"mid-large")
-				
-			});
+			// VIEW ATTENDANCE DOESN'T EXIST
+			//	$('.view_attendance').click(function(){
+			// 	var $id=$(this).attr('data-id');
+			// 	uni_modal("Employee Details","view_attendance.php?id="+$id,"mid-large")
+			// });
 			$('#new_attendance_btn').click(function(){
 				uni_modal("New Time Record/s","manage_attendance.php",'mid-large')
 			})

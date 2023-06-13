@@ -293,11 +293,12 @@ Class Action {
 		if($delete)
 			return 1;
 	}
+	//not functioning
 	function save_employee_attendance(){
 		extract($_POST);
 		
-		foreach($employee_id as $k =>$v){
-			//$datetime_log[$k] =date("Y-m-d H:i",strtotime($datetime_log[$k]));
+		foreach($employee_id as $k => $v){
+			$datetime_log[$k] = date("m/d/Y - h:i:s a");
 			$data =" employee_id='$employee_id[$k]' ";
 			$data .=", log_type = '$log_type[$k]' ";
 			$data .=", datetime_log = '$datetime_log[$k]' ";
@@ -309,8 +310,8 @@ Class Action {
 	}
 	function delete_employee_attendance(){
 		extract($_POST);
-		$date = explode('_',$id);
-		$dt = date("Y-m-d",strtotime($date[1]));
+		$date = explode('_', $id);
+		$dt = date("m/d/Y - h:i:s a", strtotime($date[1]));
  
 		$delete = $this->db->query("DELETE FROM attendance where employee_id = '".$date[0]."' and date(datetime_log) ='$dt' ");
 		if($delete)
@@ -324,14 +325,17 @@ Class Action {
 		if($delete)
 			return 1;
 	}
-	//fix this (not functioning)
 	function save_payroll(){
 		extract($_POST);
-		$data = " employee = '$employee'" ;
+
+		$employee = $_POST['employee'];
+		$date_from = $_POST['date_from'];
+		$date_to = $_POST['date_to'];
+
+		$data = " employee_id = '$employee'" ;
 		$data .=", date_from ='$date_from' ";
 		$data .=", date_to = '$date_to' ";
 		//$data .=", type = '$type' ";
-		
 
 		if(empty($id)){
 			$i= 1;
