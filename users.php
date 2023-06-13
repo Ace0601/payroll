@@ -6,7 +6,7 @@
 	
 	<div class="row">
 	<div class="col-lg-12">
-		<button class="btn btn-danger float-right btn-sm col-md-2 mt-4 mr-5" id="new_user"><i class="fa fa-plus"></i> New user</button>
+		<button class="btn btn-danger float-right btn-sm col-md-2 mt-5 mr-5" id="new_user"><i class="fa fa-plus"></i> New user</button>
 	</div>
 	</div>
 	<br>

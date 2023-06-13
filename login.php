@@ -126,7 +126,7 @@ div#login-right::before {
 			},
 			success:function(resp){
 				if(resp == 1){
-					location.href ='index.php?page=home';
+					location.href ='index.php?page=attendance';
 				}else if(resp == 2){
 					location.href ='voting.php';
 				}else{

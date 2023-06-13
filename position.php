@@ -1,6 +1,6 @@
 <?php include('db_connect.php');?>
 
-<div class="container-fluid">
+<div class="container-fluid mt-5">
 	
 	<div class="col-lg-12">
 		<div class="row">
@@ -95,7 +95,7 @@
 	}
 	img{
 		max-width:100px;
-		max-height: :150px;
+		max-height: 150px;
 	}
 </style>
 <script>
