@@ -6,22 +6,23 @@
 			<input type="hidden" name="id" value="">
 			<div class="form-group">
 				<label for="" class="control-label">Employee :</label>
-				<select name="employee" class="custom-select browser-default" id="">
+				<select name="employee" class="custom-select browser-default" id="employee">
 					<?php
 					$employee_qry = $conn->query("SELECT * FROM employee") or die(mysqli_error($conn));
 					while ($row = $employee_qry->fetch_array()) : ?>
 						<option> <?php echo $row['lastname'] . ", " . $row['firstname']; ?> </option>
 					<?php endwhile;
 					?>
-					<input type="hidden" name="id" value="">
-					<div class="form-group mt-2">
-						<label for="" class="control-label">Date From :</label>
-						<input type="date" class="form-control" name="date_from">
-					</div>
-					<div class="form-group">
-						<label for="" class="control-label">Date To :</label>
-						<input type="date" class="form-control" name="date_to">
-					</div>
+			</div>
+			<input type="hidden" name="id" value="">
+			<div class="form-group mt-2">
+				<label for="" class="control-label">Date From :</label>
+				<input type="date" class="form-control" name="date_from">
+			</div>
+			<div class="form-group">
+				<label for="" class="control-label">Date To :</label>
+				<input type="date" class="form-control" name="date_to">
+			</div>
 					<!-- REMOVE
 				<div class="form-group">
 					<label for="" class="control-label">Payroll Type :</label>
