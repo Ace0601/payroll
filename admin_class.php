@@ -328,12 +328,12 @@ Class Action {
 	function save_payroll(){
 		extract($_POST);
 
-		$employee = $conn->query("SELECT * FROM employee WHERE lastname and firstname = " . $_POST['employee']); 
-		$employeeID = $employee[$row['employee_id']];
+		//$employee = $conn->query("SELECT * FROM employee WHERE CONCAT(lastname, ', ', firstname) = '" . $_POST['employee'] . "'")->fetch_assoc();
+		$employee = $_POST['employee'];
 		$date_from = $_POST['date_from'];
 		$date_to = $_POST['date_to'];
 
-		$data = " employee_id = '$employeeID' ";
+		$data = " employee = '$employee' ";
 		$data .=", date_from ='$date_from' ";
 		$data .=", date_to = '$date_to' ";
 		//$data .=", type = '$type' ";

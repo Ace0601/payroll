@@ -29,7 +29,7 @@
 								?>
 								<tr>
 									<td><?php echo $row['ref_no']?></td>
-									<td><?php echo $row['employee_id'] ?></td>
+									<td><?php echo $row['employee'] ?></td> 
 									<td><?php echo date("M d, Y",strtotime($row['date_from'])) ?></td>
 									<td><?php echo date("M d, Y",strtotime($row['date_to'])) ?></td>
 									<?php if($row['status'] == 0): ?>
