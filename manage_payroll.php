@@ -8,7 +8,7 @@
 				<!-- <input type = "hidden" name="employee_id"> -->
 				<select name="employee" class="custom-select browser-default" id="employee">
 					<?php
-					$employee_qry = $conn->query("SELECT * FROM employee WHERE id = " . $id) or die(mysqli_error($conn));
+					$employee_qry = $conn->query("SELECT * FROM employee") or die(mysqli_error($conn));
 					while ($row = $employee_qry->fetch_array()) : ?>
 						<option> <?php echo $row['lastname'] . ", " . $row['firstname']; ?> </option>
 					<?php endwhile;
