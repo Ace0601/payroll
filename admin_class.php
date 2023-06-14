@@ -368,15 +368,15 @@ Class Action {
 		// $am_out = "12:00";
 		// $pm_in = "13:00";
 		// $pm_out = "17:00";
-		//$this->db->query("DELETE FROM payroll_items where payroll_id=".$id); //inspect
+		$this->db->query("DELETE FROM payroll_items where payroll_id=".$id); //inspect
 		$pay = $this->db->query("SELECT * FROM payroll where id = ".$id)->fetch_array();
-		$employee = $this->db->query("SELECT * FROM employee where CONCAT(lastname, ',', firstname) = " . $_POST['employee'])->fetch_array();
+		$employee = $this->db->query("SELECT * FROM employee where CONCAT(lastname, ',', firstname) = " . $pay['employee']);
 
 		$days = abs(strtotime($pay['date_to']." 23:59:59")) - strtotime($pay['date_from']." 00:00:00 -1 day") ; 
         $calc_days = floor($days / (60*60*24)); // compute no. days 
 		$att=$this->db->query("SELECT * FROM attendance where datetime_log between ".$pay['date_from']." AND ".$pay['date_to']." order by datetime_log asc") or die(mysqli_error($conn));
 		while($row=$att->fetch_array()){
-			$date = date("M d,Y",strtotime($row['datetime_log']));
+			$date = date("Y-m-d",strtotime($row['datetime_log']));
 			if($row['log_type'] == 1){
 				if(!isset($attendance[$row['employee_id']."_".$date]['log'][$row['log_type']]))
 				$attendance[$row['employee_id']."_".$date]['log'][$row['log_type']] = $row['datetime_log'];
@@ -433,19 +433,19 @@ Class Action {
 				}
 			}
 
-
+			$employee = $pay['employee'];
 			$absent = $calc_days - $present;  //change $dp to $calc_days
-			$data = " payroll_id = '".$pay['id']."' ";
-			$data .= ", employee = '$employee' ";
-			$data .= ", absent = '$absent' ";
-			$data .= ", present = '$present' ";
-			$data .= ", late = '$late' ";
-			$data .= ", salary = '$salary' ";
-			$data .= ", allowance_amount = '$allow_amount' ";
-			$data .= ", deduction_amount = '$ded_amount' ";
-			$data .= ", allowances = '".json_encode($all_arr)."' ";
-			$data .= ", deductions = '".json_encode($ded_arr)."' ";
-			$data .= ", net = '$net' ";
+			$data = " payroll_id = ".$pay['id'];
+			$data .= ", employee = ".$employee;
+			$data .= ", absent = ".$absent;
+			$data .= ", present = ".$present;
+			$data .= ", late = ".$late;
+			$data .= ", salary = ".$salary;
+			$data .= ", allowance_amount = ".$allow_amount;
+			$data .= ", deduction_amount = ".$ded_amount;
+			$data .= ", allowances = ".json_encode($all_arr);
+			$data .= ", deductions = ".json_encode($ded_arr);
+			$data .= ", net = ".$net;
 			$save[] = $this->db->query("INSERT INTO payroll_items set ".$data);
 
 		}
