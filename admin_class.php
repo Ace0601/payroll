@@ -328,7 +328,7 @@ Class Action {
 	function save_payroll(){
 		extract($_POST);
 
-		$employee = $_POST['employee'];
+		$employee = $_POST['employee']; //convert
 		$date_from = $_POST['date_from'];
 		$date_to = $_POST['date_to'];
 
@@ -360,6 +360,7 @@ Class Action {
 		if($delete)
 			return 1;
 	}
+	//logical error here
 	function calculate_payroll(){
 		extract($_POST);
 		// $am_in = "08:00";
