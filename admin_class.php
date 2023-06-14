@@ -434,7 +434,7 @@ Class Action {
 			}
 
 
-			$absent = $dp - $present;  //change $dp to $calc_days
+			$absent = $calc_days - $present;  //change $dp to $calc_days
 			$data = " payroll_id = '".$pay['id']."' ";
 			$data .= ", employee = '$employee' ";
 			$data .= ", absent = '$absent' ";
