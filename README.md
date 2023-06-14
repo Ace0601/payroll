@@ -1,5 +1,5 @@
 # Attendance and Payroll System
-capstone project conducted by a group of engineering student in Camarines Sur Polytechnic Colleges that aims to automate the process of attendance and payroll computation in a shop or institution.
+a capstone project conducted by a group of Electronics Engineering students in Camarines Sur Polytechnic Colleges that aims to automate the process of attendance and payroll computation in a shop or institution.
 
 ## Functions:
 - <b>Attendance.</b> The employees and staff of the shop will be able to time in and time out by simply selecting their names.
