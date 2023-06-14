@@ -3,7 +3,7 @@
 <div class="container-fluid">
 	<div class="col-lg-12">
 		<form id="manage-payroll">
-			<input type="hidden" name="id" value="">
+			<!-- <input type="hidden" name="id" value=""> -->
 			<div class="form-group">
 				<label for="" class="control-label">Employee :</label>
 				<select name="employee" class="custom-select browser-default" id="employee">
@@ -14,9 +14,9 @@
 					<?php endwhile;
 					?>
 			</div>
-			<input type="hidden" name="id" value="">
-			<div class="form-group mt-2">
-				<label for="" class="control-label">Date From :</label>
+			<!-- <input type="hidden" name="id" value=""> -->
+			<div class="form-group">
+				<label for="" class="control-label mt-4">Date From :</label>
 				<input type="date" class="form-control" name="date_from">
 			</div>
 			<div class="form-group">
@@ -37,7 +37,7 @@
 </div>
 
 <script>
-	//logical error: can't add payroll
+
 	$('#manage-payroll').submit(function(e) {
 		e.preventDefault();
 		start_load();

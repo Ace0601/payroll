@@ -54,7 +54,7 @@ if (isset($_GET['id'])) {
 			</select>
 		</div>
 		<div class="form-group">
-			<label>Monthly Salary</label>
+			<label>Weekly Salary</label>
 			<input type="number" name="salary" required="required" class="form-control text-right" step="any"
 				value="<?php echo isset($salary) ? $salary : "" ?>" />
 		</div>

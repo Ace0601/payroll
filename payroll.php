@@ -73,7 +73,7 @@
 			$('.edit_payroll').click(function(){
 				var $id=$(this).attr('data-id');
 				uni_modal("Edit Employee","manage_payroll.php?id="+$id)
-				// logical error found: adds payroll instead of editing
+
 			});
 			$('.view_payroll').click(function(){
 				var $id=$(this).attr('data-id');
@@ -97,7 +97,7 @@
 							if(resp == 1){
 								alert_toast("Payroll successfully computed","success");
 									setTimeout(function(){
-									location.reload();
+									location.reload()
 
 								},1000)
 							}
@@ -116,7 +116,7 @@
 						if(resp == 1){
 							alert_toast("Employee's data successfully deleted","success");
 								setTimeout(function(){
-								location.reload();
+								location.reload()
 
 							},1000)
 						}
