@@ -24,17 +24,14 @@ $emp = $conn->query("SELECT e.*,d.name as dname,p.name as pname FROM employee e 
 					<div class="card-body">
 						<ul class="list-group">
 							<?php
-							$allowances = $conn->query("SELECT ea.*,a.allowance as aname FROM employee_allowances ea inner join allowances a on a.id = ea.allowance_id where ea.employee_id=".$_GET['id']." order by ea.type asc,date(ea.effective_date) asc, a.allowance asc ");
-							$t_arr = array(1=>"Monthly",2=>"Semi-Monthly",3=>"Once");
+							$allowances = $conn->query("SELECT ea.*,a.allowance as aname FROM employee_allowances ea inner join allowances a on a.id = ea.allowance_id where ea.employee_id=".$_GET['id']." order by date(ea.effective_date) asc, a.allowance asc ");
+							//$t_arr = array(1=>"Monthly",2=>"Semi-Monthly",3=>"Once");
 							while($row=$allowances->fetch_assoc()):
 							?>
 						  <li class="list-group-item d-flex justify-content-between align-items-center alist" data-id="<?php echo $row['id'] ?>">
 						  	<span>
 						    <p><small><?php echo $row['aname'] ?> Allowance</small></p>
-						    <p><small>Type: <?php echo $t_arr[$row['type']] ?></small></p>
-						    <?php if($row['type'] == 3): ?>
 						    <p><small>Effective: <?php echo date("M d,Y",strtotime($row['effective_date'])) ?></small></p>
-						    <?php endif; ?>
 						    </span>
 						    <button class="badge badge-danger badge-pill btn remove_allowance" type="button"  data-id="<?php echo $row['id'] ?>"><i class="fa fa-trash"></i></button>
 						  </li>
@@ -52,17 +49,14 @@ $emp = $conn->query("SELECT e.*,d.name as dname,p.name as pname FROM employee e 
 					<div class="card-body">
 						<ul class="list-group">
 							<?php
-							$deductions = $conn->query("SELECT ea.*,d.deduction as dname FROM employee_deductions ea inner join deductions d on d.id = ea.deduction_id where ea.employee_id=".$_GET['id']." order by ea.type asc,date(ea.effective_date) asc, d.deduction asc ");
+							$deductions = $conn->query("SELECT ea.*,d.deduction as dname FROM employee_deductions ea inner join deductions d on d.id = ea.deduction_id where ea.employee_id=".$_GET['id']." order by date(ea.effective_date) asc, d.deduction asc ");
 							$t_arr = array(1=>"Monthly",2=>"Semi-Monthly",3=>"Once");
 							while($row=$deductions->fetch_assoc()):
 							?>
 						  <li class="list-group-item d-flex justify-content-between align-items-center dlist" data-id="<?php echo $row['id'] ?>">
 						  	<span>
 						    <p><small><?php echo $row['dname'] ?></small></p>
-						    <p><small>Type: <?php echo $t_arr[$row['type']] ?></small></p>
-						    <?php if($row['type'] == 3): ?>
 						    <p><small>Effective: <?php echo date("M d,Y",strtotime($row['effective_date'])) ?></small></p>
-						    <?php endif; ?>
 						    </span>
 						    <button class="badge badge-danger badge-pill btn remove_deduction" type="button"  data-id="<?php echo $row['id'] ?>"><i class="fa fa-trash"></i></button>
 						  </li>

@@ -17,7 +17,7 @@ Class Action {
 
 	function login(){
 		extract($_POST);
-		$qry = $this->db->query("SELECT * FROM users where username = '".$username."' and password = '".$password."' ");
+		$qry = $this->db->query("SELECT * FROM users where username = ".$username." and password = ".$password);
 		if($qry->num_rows > 0){
 			foreach ($qry->fetch_array() as $key => $value) {
 				if($key != 'passwors' && !is_numeric($key))
@@ -61,7 +61,7 @@ Class Action {
 		$data = " name = '$name' ";
 		$data .= ", username = '$username' ";
 		$data .= ", password = '$password' ";
-		$data .= ", type = '$type' ";
+		//$data .= ", type = '$type' ";
 		if(empty($id)){
 			$save = $this->db->query("INSERT INTO users set ".$data);
 		}else{
@@ -86,7 +86,7 @@ Class Action {
 		$data .= ", address = '$address' ";
 		$data .= ", username = '$email' ";
 		$data .= ", password = '".md5($password)."' ";
-		$data .= ", type = 3";
+		//$data .= ", type = 3";
 		$chk = $this->db->query("SELECT * FROM users where username = '$email' ")->num_rows;
 		if($chk > 0){
 			return 2;
@@ -368,13 +368,13 @@ Class Action {
 		// $am_out = "12:00";
 		// $pm_in = "13:00";
 		// $pm_out = "17:00";
-		$this->db->query("DELETE FROM payroll_items where payroll_id=".$id); //inspect
+		//$this->db->query("DELETE FROM payroll_items where payroll_id=".$id); //inspect
 		$pay = $this->db->query("SELECT * FROM payroll where id = ".$id)->fetch_array();
-		$employee = $this->db->query("SELECT * FROM employee  where id = ".$id)->fetch_array();
-		//$dm = 5;
-		$calc_days = abs(strtotime($pay['date_to']." 23:59:59")) - strtotime($pay['date_from']." 00:00:00 -1 day") ; 
-        $calc_days =floor($calc_days / (60*60*24)); // compute no. days 
-		$att=$this->db->query("SELECT * FROM attendance where datetime_log between '".$pay['date_from']."' and '".$pay['date_from']."' order by datetime_log asc") or die(mysqli_error($conn));
+		$employee = $this->db->query("SELECT * FROM employee where CONCAT(lastname, ',', firstname) = " . $_POST['employee'])->fetch_array();
+
+		$days = abs(strtotime($pay['date_to']." 23:59:59")) - strtotime($pay['date_from']." 00:00:00 -1 day") ; 
+        $calc_days = floor($days / (60*60*24)); // compute no. days 
+		$att=$this->db->query("SELECT * FROM attendance where datetime_log between ".$pay['date_from']." AND ".$pay['date_to']." order by datetime_log asc") or die(mysqli_error($conn));
 		while($row=$att->fetch_array()){
 			$date = date("M d,Y",strtotime($row['datetime_log']));
 			if($row['log_type'] == 1){
@@ -385,26 +385,24 @@ Class Action {
 			}
 		}
 
-		$deductions = $this->db->query("SELECT * FROM employee_deductions where effective_date between '".$pay['date_from']."' and '".$pay['date_from']."' ) ) ");
-		$allowances = $this->db->query("SELECT * FROM employee_allowances where effective_date between '".$pay['date_from']."' and '".$pay['date_from']."' ) ) ");
+		$deductions = $this->db->query("SELECT * FROM employee_deductions where effective_date between ".$pay['date_from']." and ".$pay['date_to']);
+		$allowances = $this->db->query("SELECT * FROM employee_allowances where effective_date between ".$pay['date_from']." and ".$pay['date_to']);
 		while($row = $deductions->fetch_assoc()){
 			$ded[$row['employee_id']][] = array('did'=>$row['deduction_id'],"amount"=>$row['amount']);
-		}
+		} //compute deduction
 		while($row = $allowances->fetch_assoc()){
 			$allow[$row['employee_id']][] = array('aid'=>$row['allowance_id'],"amount"=>$row['amount']);
-		}
+		} // compute allowance
 		while($row[$employee]->fetch_assoc()){
 			$salary = $row['salary']; 
-			//$daily = $salary / 22;
 			$min = ($salary / 7) /60; //wage per minute in a week 
-			//$dp = 22 / $pay; //purpose unclear
 
 			// subtract tardiness 
 			for($i = 0; $i < $calc_days;$i++){
-				$dd = date("Y-m-d",strtotime($pay['date_from']." +".$i." days")); //inspect
+				$dd = date("Y-m-d",strtotime($pay['date_from']." +".$i." days")); 
 
-				if(isset($attendance[$row['id']."_".$dd]['log']))
-				$count = count($attendance[$row['id']."_".$dd]['log']); 
+				if(isset($attendance[$row['id']."_".$dd]['log'])) {
+				$present = count($attendance[$row['id']."_".$dd]['log']); 
 					
 					if(isset($attendance[$row['id']."_".$dd]['log'][1]) && isset($attendance[$row['id']."_".$dd]['log'][2])){
 						$att_mn = abs(strtotime($attendance[$row['id']."_".$dd]['log'][2])) - strtotime($attendance[$row['id']."_".$dd]['log'][1]); 
@@ -413,14 +411,7 @@ Class Action {
         				$late += (240 - $att_mn);
         				$present += .5;
 					}
-
-					// if(isset($attendance[$row['id']."_".$dd]['log'][3]) && isset($attendance[$row['id']."_".$dd]['log'][4])){
-					// 	$att_mn = abs(strtotime($attendance[$row['id']."_".$dd]['log'][4])) - strtotime($attendance[$row['id']."_".$dd]['log'][3]) ; 
-        			// 	$att_mn =floor($att_mn  /60 );
-        			// 	$net += ($att_mn * $min);
-        			// 	$late += (240 - $att_mn);
-        			// 	$present += .5;
-					// } 
+				}
 			}
 
 			// compute for allowance and deductions
@@ -445,7 +436,7 @@ Class Action {
 
 			$absent = $dp - $present;  //change $dp to $calc_days
 			$data = " payroll_id = '".$pay['id']."' ";
-			$data .= ", employee_id = '".$row['id']."' ";
+			$data .= ", employee = '$employee' ";
 			$data .= ", absent = '$absent' ";
 			$data .= ", present = '$present' ";
 			$data .= ", late = '$late' ";
@@ -455,7 +446,6 @@ Class Action {
 			$data .= ", allowances = '".json_encode($all_arr)."' ";
 			$data .= ", deductions = '".json_encode($ded_arr)."' ";
 			$data .= ", net = '$net' ";
-			$data .= ", date_created = ' ".date('Y-m-d')."' ";
 			$save[] = $this->db->query("INSERT INTO payroll_items set ".$data);
 
 		}

@@ -9,7 +9,7 @@
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
-SET time_zone = "+00:00";
+SET time_zone = "+08:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `payroll`
+-- Database: `202payroll`
 --
 
 -- --------------------------------------------------------
@@ -52,7 +52,7 @@ INSERT INTO `allowances` (`id`, `allowance`, `description`) VALUES
 CREATE TABLE `attendance` (
   `id` int(11) NOT NULL,
   `employee_id` int(20) NOT NULL,
-  `log_type` tinyint(1) NOT NULL COMMENT '1 = AM IN,2 = AM out, 3= PM IN, 4= PM out\r\n',
+  `log_type` tinyint(1) NOT NULL COMMENT '1 = IN, 2 = OUT',
   `datetime_log` datetime NOT NULL DEFAULT current_timestamp(),
   `date_updated` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -62,12 +62,12 @@ CREATE TABLE `attendance` (
 --
 
 INSERT INTO `attendance` (`id`, `employee_id`, `log_type`, `datetime_log`, `date_updated`) VALUES
-(10, 9, 1, '2020-09-16 08:00:00', '2020-09-29 16:16:57'),
-(11, 9, 2, '2020-09-16 12:00:00', '2020-09-29 16:16:57'),
-(12, 9, 3, '2020-09-16 13:00:00', '2020-09-29 16:16:57'),
-(16, 9, 4, '2020-09-16 17:00:00', '2020-09-29 16:16:57'),
-(17, 9, 1, '2021-03-07 09:00:00', '2021-03-07 15:10:07'),
-(18, 9, 2, '2021-03-07 11:00:00', '2021-03-07 15:11:06');
+(1, 9, 1, '2023-06-05 08:00:00', '2023-06-05 08:00:00'),
+(2, 9, 2, '2023-06-05 12:00:00', '2023-06-05 12:00:00'),
+(3, 9, 1, '2023-06-06 13:00:00', '2023-06-06 13:00:00'),
+(4, 9, 2, '2023-06-06 17:00:00', '2023-06-06 17:00:00'),
+(5, 9, 1, '2023-06-07 09:00:00', '2023-06-07 09:00:00'),
+(6, 9, 2, '2023-06-07 11:00:00', '2023-06-07 11:00:00');
 
 -- --------------------------------------------------------
 
@@ -154,9 +154,9 @@ CREATE TABLE `employee_allowances` (
 --
 
 INSERT INTO `employee_allowances` (`id`, `employee_id`, `allowance_id`, `amount`, `effective_date`, `date_created`) VALUES
-(1, 9, 4, 1000, '0000-00-00', '2020-09-29 11:20:04'),
-(3, 9, 3, 300, '0000-00-00', '2020-09-29 11:37:31'),
-(5, 9, 1, 1000, '2020-09-16', '2020-09-29 11:38:31');
+(1, 9, 4, 1000, '2023-06-01', '2023-06-01 11:00:00'),
+(3, 9, 3, 300, '2023-06-01', '2023-06-01 11:37:31'),
+(5, 9, 1, 1000, '2023-06-01', '2023-06-01 11:38:31');
 
 -- --------------------------------------------------------
 
@@ -179,8 +179,8 @@ CREATE TABLE `employee_deductions` (
 --
 
 INSERT INTO `employee_deductions` (`id`, `employee_id`, `deduction_id`, `amount`, `effective_date`, `date_created`) VALUES
-(2, 9, 3, 500, '0000-00-00', '2020-09-29 11:52:46'),
-(3, 9, 1, 1500, '2020-09-16', '2020-09-29 11:53:27');
+(2, 9, 3, 500, '2023-06-01', '2023-06-01 11:52:46'),
+(3, 9, 1, 1500, '2023-06-01', '2023-06-01 11:53:27');
 
 -- --------------------------------------------------------
 
@@ -191,11 +191,11 @@ INSERT INTO `employee_deductions` (`id`, `employee_id`, `deduction_id`, `amount`
 CREATE TABLE `payroll` (
   `id` int(30) NOT NULL,
   `ref_no` text NOT NULL,
-  `employee_id` int(30) NOT NULL,
+  `employee` varchar(255) NOT NULL,
   `date_from` date NOT NULL,
   `date_to` date NOT NULL,
   -- `type` tinyint(1) NOT NULL COMMENT '1 = Monthly, 2= Semi-Montly, 3 = once',
-  `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0 =New,1 = computed',
+  `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0 = New,1 = Computed',
   `date_created` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -203,8 +203,8 @@ CREATE TABLE `payroll` (
 -- Dumping data for table `payroll`
 --
 
-INSERT INTO `payroll` (`id`, `ref_no`, `employee_id`, `date_from`, `date_to`, `status`, `date_created`) VALUES
-(1, '2020-3543', 9, '2020-09-16', '2020-09-30', 1, '2020-09-29 15:04:13');
+INSERT INTO `payroll` (`id`, `ref_no`, `employee`, `date_from`, `date_to`, `status`, `date_created`) VALUES
+(1, '2023-3543', 'Suarez, Angel Jude Reyes', '2023-06-04', '2023-06-10', 0, '2023-06-14 15:04:13');
 
 -- --------------------------------------------------------
 
@@ -233,7 +233,7 @@ CREATE TABLE `payroll_items` (
 --
 
 INSERT INTO `payroll_items` (`id`, `payroll_id`, `employee_id`, `present`, `absent`, `late`, `salary`, `allowance_amount`, `allowances`, `deduction_amount`, `deductions`, `net`, `date_created`) VALUES
-(10, 1, 9, 1, 10, '0', 30000, 1300, '[{\"aid\":\"3\",\"amount\":\"300\"},{\"aid\":\"1\",\"amount\":\"1000\"}]', 2000, '[{\"did\":\"3\",\"amount\":\"500\"},{\"did\":\"1\",\"amount\":\"1500\"}]', 664, '2020-09-29 18:46:59');
+(10, 1, 9, 5, 1, '0', 30000, 1300, '[{\"aid\":\"3\",\"amount\":\"300\"},{\"aid\":\"1\",\"amount\":\"1000\"}]', 2000, '[{\"did\":\"3\",\"amount\":\"500\"},{\"did\":\"1\",\"amount\":\"1500\"}]', 664, '2023-06-14 18:46:59');
 
 -- --------------------------------------------------------
 
@@ -269,16 +269,15 @@ CREATE TABLE `users` (
   `address` text NOT NULL,
   `contact` text NOT NULL,
   `username` varchar(100) NOT NULL,
-  `password` varchar(200) NOT NULL,
-  `type` tinyint(1) NOT NULL DEFAULT 2 COMMENT '1=admin , 2 = staff'
+  `password` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `doctor_id`, `name`, `address`, `contact`, `username`, `password`, `type`) VALUES
-(1, 0, 'Administrator', '', '', 'admin', 'admin123', 1);
+INSERT INTO `users` (`id`, `doctor_id`, `name`, `address`, `contact`, `username`, `password`) VALUES
+(1, 0, 'Administrator', '', '', 'admin', 'admin123');
 
 --
 -- Indexes for dumped tables

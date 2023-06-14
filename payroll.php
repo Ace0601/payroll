@@ -40,7 +40,7 @@
 									<td>
 										<center>
 									<?php if($row['status'] == 0): ?>
-										 <button class="btn btn-sm btn-outline-primary calculate_payroll" data-id="<?php echo $row['id']?>" type="button">Calculate</button>
+										 <button class="btn btn-sm btn-outline-primary calculate_payroll" data-id="<?php echo $row['id']?>" type="button">Compute</button>
 									<?php else: ?>
 										 <button class="btn btn-sm btn-outline-primary view_payroll" data-id="<?php echo $row['id']?>" type="button"><i class="fa fa-eye"></i></button>
 									<?php endif ?>

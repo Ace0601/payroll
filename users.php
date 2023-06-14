@@ -85,7 +85,7 @@ $('.delete_user').click(function(){
 					alert_toast("Data successfully deleted",'success')
 					setTimeout(function(){
 						location.reload()
-					},1500)
+					},1000)
 
 				}
 			}
