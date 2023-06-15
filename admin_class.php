@@ -298,12 +298,14 @@ Class Action {
 		extract($_POST);
 		
 		foreach($employee_id as $k => $v){
-			$datetime_log[$k] = date("m/d/Y - h:i:s a");
-			$data =" employee_id='$employee_id[$k]' ";
-			$data .=", log_type = '$log_type[$k]' ";
-			$data .=", datetime_log = '$datetime_log[$k]' ";
-			$save[] = $this->db->query("INSERT INTO attendance set ".$data);
-		}
+			date_default_timezone_set("Asia/Manila");
+			$datetime_log[$k] = strtotime(date("m/d/Y - h:i:s a"));
+			$data = "employee_id = '".$employee_id[$k]."' ";
+			//$data .= ", log_type = '".$log_type[$k]."' ";
+			$data .= ", datetime_log = '".$datetime_log[$k]."' ";
+			$save[] = $this->db->query("INSERT INTO attendance SET ".$data);
+			$type = $this->db->query("INSERT INTO attendance (`log_type`) VALUES $log_type[$k]");
+		}		
 
 		if(isset($save))
 			return 1;
@@ -313,7 +315,7 @@ Class Action {
 		$date = explode('_', $id);
 		$dt = date("m/d/Y - h:i:s a", strtotime($date[1]));
  
-		$delete = $this->db->query("DELETE FROM attendance where employee_id = '".$date[0]."' and date(datetime_log) ='$dt' ");
+		$delete = $this->db->query("DELETE FROM attendance where employee_id = '".$date[0]."' and datetime_log ='$dt' ");
 		if($delete)
 			return 1;
 	}

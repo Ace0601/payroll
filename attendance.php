@@ -55,6 +55,7 @@
 									$att=$conn->query("SELECT a.*,e.employee_no, concat(e.lastname,', ',e.firstname,' ',e.middlename) as ename FROM attendance a inner join employee e on a.employee_id = e.id order by datetime_log asc") or die(mysqli_error($conn));
 									$lt_arr = array(1 => " Time-in",2=>"Time-out"); 
 									while ($row=$att->fetch_array()){
+										date_default_timezone_set("Asia/Manila");
 										$date = date("M d, Y", strtotime($row['datetime_log']));
 										$attendance[$row['employee_id']."_".$date]['details'] = array("eid"=>$row['employee_id'],"name"=>$row['ename'],"eno"=>$row['employee_no'],"date"=>$date);
 										if($row['log_type'] == 1){
@@ -86,7 +87,7 @@
 											<!-- edited -->
 											<?php 
 												//date_default_timezone_set("Asia/Manila");
-												echo date("h:m a", strtotime($attendance[$key]['log'][$k]['date']));
+												echo date("h:i a", strtotime($attendance[$key]['log'][$k]['date']));
 											?> </b>
 											<span class="badge badge-danger rem_att" data-id="<?php echo $attendance[$key]['log'][$k]['id'] ?>"><i class="fa fa-trash"></i></span>
 										</small>

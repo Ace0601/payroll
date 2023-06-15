@@ -79,6 +79,7 @@
 			<td>
 				<p class="adate" name="datetime_log[]">
 					<?php 
+						$datetime = $conn->query("INSERT INTO `attendance` (`datetime_log`) VALUES (current_timestamp())");
 						date_default_timezone_set("Asia/Manila");
 						echo date("m/d/Y - h:i:s a");
 					?> </p>
