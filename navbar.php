@@ -13,10 +13,10 @@
 				<a href="index.php?page=allowances" class="nav-item nav-allowances"><span class='icon-field'><i class="fa fa-list"></i></span> Allowance List</a>
 				<a href="index.php?page=deductions" class="nav-item nav-deductions"><span class='icon-field'><i class="fa fa-money-bill-wave"></i></span> Deduction List</a>		
 					
-				<?php if($_SESSION['login_type'] == 1): ?>
+				<?php //if($_SESSION['login_type'] == 1): ?>
 				<a href="index.php?page=users" class="nav-item nav-users"><span class='icon-field'><i class="fa fa-users"></i></span> Users</a>
 				
-			<?php endif; ?>
+			<?php // endif; ?>
 		</div>
 
 </nav>
