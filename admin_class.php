@@ -330,9 +330,6 @@ class Action
 			$data .= ", log_type = '" . $log_type[$k] . "' ";
 			$data .= ", datetime_log = current_timestamp()";
 			$save[] = $this->db->query("INSERT INTO attendance SET " . $data);
-			// $datetime = $this->db->query("INSERT INTO `attendance` set `datetime_log` = current_timestamp()");
-			// $logtype = $this->db->query("INSERT INTO attendance set `log_type` = '".$log_type[$k]."'");
-			//$datetime = $conn->query("INSERT INTO `attendance` (`datetime_log`) VALUES (current_timestamp())");
 		}
 
 		if (isset($save))

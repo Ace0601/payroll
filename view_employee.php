@@ -50,7 +50,7 @@ $emp = $conn->query("SELECT e.*,d.name as dname,p.name as pname FROM employee e 
 						<ul class="list-group">
 							<?php
 							$deductions = $conn->query("SELECT ea.*,d.deduction as dname FROM employee_deductions ea inner join deductions d on d.id = ea.deduction_id where ea.employee_id=".$_GET['id']." order by date(ea.effective_date) asc, d.deduction asc ");
-							$t_arr = array(1=>"Monthly",2=>"Semi-Monthly",3=>"Once");
+							//$t_arr = array(1=>"Monthly",2=>"Semi-Monthly",3=>"Once");
 							while($row=$deductions->fetch_assoc()):
 							?>
 						  <li class="list-group-item d-flex justify-content-between align-items-center dlist" data-id="<?php echo $row['id'] ?>">
